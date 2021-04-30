@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_appointment">
+
+    <fragment
+        android:id="@+id/navigation_appointment"
+        android:name="com.styledbylovee.styledemployee.ui.appointment.AppointmentFragment"
+        android:label="Appointments"
+        tools:layout="@layout/fragment_appointment" >
+        <action
+            android:id="@+id/action_navigation_appointment_to_appointDetailFragment"
+            app:destination="@id/appointDetailFragment" />
+        <action
+            android:id="@+id/action_navigation_appointment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.styledbylovee.styledemployee.ui.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.styledbylovee.styledemployee.ui.notifications.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/appointDetailFragment"
+        android:name="com.styledbylovee.styledemployee.ui.AppointDetailFragment"
+        android:label="Profile"
+        tools:layout="@layout/appoint_detail_fragment" >
+        <argument
+            android:name="appointmentId"
+            app:argType="string" />
+    </fragment>
+    <dialog
+        android:id="@+id/checkoutDialogFragment"
+        android:name="com.styledbylovee.styledemployee.CheckoutDialogFragment"
+        android:label="fragment_checkout_dialog_list_dialog"
+        tools:layout="@layout/fragment_checkout_dialog_list_dialog" />
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.styledbylovee.styledemployee.CheckoutFragment"
+        android:label="Add Item"
+        tools:layout="@layout/fragment_checkout" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_checkoutDialogFragment"
+            app:destination="@id/checkoutDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.styledbylovee.styledemployee.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" />
+</navigation>
