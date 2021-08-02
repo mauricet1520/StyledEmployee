@@ -20,7 +20,7 @@
         android:theme="@style/Theme.StyledEmployee">
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main"></activity>
+            android:label="Styled Stylist"></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

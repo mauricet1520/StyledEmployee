@@ -1,8 +1,6 @@
 package com.styledbylovee.styledemployee.data.appointment
 
-import com.styledbylovee.styledemployee.data.appointment.Appointment
-import com.styledbylovee.styledemployee.data.appointment.AppointmentDTO
-import com.styledbylovee.styledemployee.data.appointment.AppointmentResponse
+import com.styledbylovee.styledemployee.data.staff.FetchAllStaffResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -23,4 +21,7 @@ interface AppointmentService {
             @Query("start_time") start_time: String,
             @Query("end_time") end_time: String,
             @Query("staff_key") staff_key: String): Response<AppointmentResponse>
+
+    @GET("/getAllStaff")
+    suspend fun getAllStaff(): Response<FetchAllStaffResponse>
 }

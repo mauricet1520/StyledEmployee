@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -37,9 +40,14 @@ class AppointDetailFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(AppointDetailViewModel::class.java)
 
-        customerViewModel = ViewModelProvider(this).get(CustomerViewModel::class.java)
+        customerViewModel = ViewModelProvider(requireActivity()).get(CustomerViewModel::class.java)
         Log.i(LOG_TAG, "Appointment Id ${args.appointmentId}")
                viewModel.getAppointment(args.appointmentId)
+
+        (requireActivity() as AppCompatActivity).run {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+        setHasOptionsMenu(true)
 
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
@@ -55,8 +63,6 @@ class AppointDetailFragment : Fragment() {
 
             customerId = it.customer_id!!
             customerViewModel.getCustomerAppointment(it.customer_id!!)
-
-
 
             with(binding.profileAddress) {
                 text = it.street_address
@@ -170,6 +176,15 @@ class AppointDetailFragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            findNavController().navigateUp()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_appointment">
+    app:startDestination="@id/navigation_appointment">
 
     <fragment
         android:id="@+id/navigation_appointment"
@@ -14,8 +14,8 @@
             android:id="@+id/action_navigation_appointment_to_appointDetailFragment"
             app:destination="@id/appointDetailFragment" />
         <action
-            android:id="@+id/action_navigation_appointment_to_checkoutFragment"
-            app:destination="@id/checkoutFragment" />
+            android:id="@+id/action_navigation_appointment_to_transactionFragment"
+            app:destination="@id/transactionFragment" />
     </fragment>
 
     <fragment
@@ -42,19 +42,83 @@
         android:id="@+id/checkoutDialogFragment"
         android:name="com.styledbylovee.styledemployee.CheckoutDialogFragment"
         android:label="fragment_checkout_dialog_list_dialog"
-        tools:layout="@layout/fragment_checkout_dialog_list_dialog" />
+        tools:layout="@layout/fragment_checkout_dialog_list_dialog" >
+        <action
+            android:id="@+id/action_checkoutDialogFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+        <action
+            android:id="@+id/action_checkoutDialogFragment_to_checkoutDisplayFragment"
+            app:destination="@id/checkoutDisplayFragment" />
+    </dialog>
     <fragment
         android:id="@+id/checkoutFragment"
         android:name="com.styledbylovee.styledemployee.CheckoutFragment"
         android:label="Add Item"
         tools:layout="@layout/fragment_checkout" >
+        <argument
+            android:name="transaction_number"
+            app:argType="string" />
         <action
-            android:id="@+id/action_checkoutFragment_to_checkoutDialogFragment"
-            app:destination="@id/checkoutDialogFragment" />
+            android:id="@+id/action_checkoutFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.styledbylovee.styledemployee.CameraFragment"
         android:label="fragment_camera"
-        tools:layout="@layout/fragment_camera" />
+        tools:layout="@layout/fragment_camera" >
+        <argument
+            android:name="transaction_number"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null" />
+        <argument android:name="sku_number"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="null" />
+        <action
+            android:id="@+id/action_cameraFragment_to_cameraProductFragment"
+            app:destination="@id/cameraProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/transactionFragment"
+        android:name="com.styledbylovee.styledemployee.TransactionFragment"
+        android:label="Item List"
+        tools:layout="@layout/fragment_transaction" />
+    <fragment
+        android:id="@+id/cameraProductFragment"
+        android:name="com.styledbylovee.styledemployee.CameraProductFragment"
+        android:label="Camera"
+        tools:layout="@layout/fragment_camera_product" >
+        <argument
+            android:name="transaction_number"
+            app:argType="string" />
+        <argument
+            android:name="sku_number"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_cameraProductFragment_to_transactionFragment"
+            app:destination="@id/transactionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutDisplayFragment"
+        android:name="com.styledbylovee.styledemployee.CheckoutDisplayFragment"
+        android:label="Payment Display"
+        tools:layout="@layout/fragment_checkout_display" >
+        <action
+            android:id="@+id/action_checkoutDisplayFragment_to_checkoutPaymentFragment"
+            app:destination="@id/checkoutPaymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutPaymentFragment"
+        android:name="com.styledbylovee.styledemployee.CheckoutPaymentFragment"
+        android:label="Payment Checkout"
+        tools:layout="@layout/fragment_checkout_payment" >
+        <argument
+            android:name="transaction_number"
+            app:argType="string" />
+        <argument
+            android:name="total_cost"
+            app:argType="float" />
+    </fragment>
 </navigation>

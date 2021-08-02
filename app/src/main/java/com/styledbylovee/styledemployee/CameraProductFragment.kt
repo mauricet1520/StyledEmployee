@@ -1,6 +1,5 @@
 package com.styledbylovee.styledemployee
 
-
 import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -25,16 +24,13 @@ import com.google.firebase.storage.StorageReference
 import com.styledbylovee.styledemployee.util.LOG_TAG
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_camera.*
+import kotlinx.android.synthetic.main.fragment_camera_product.*
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-private const val APPOINTMENT = "appointment"
-private const val CUSTOMER = "customer"
-private const val TRANSACTION_NUMBER = "transaction_number"
-private const val SKU_NUMBER = "sku_number"
+class CameraProductFragment : Fragment() {
 
-class CameraFragment : Fragment() {
 
     private var preview: Preview? = null
     private var imageCapture: ImageCapture? = null
@@ -59,12 +55,12 @@ class CameraFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
         storage = FirebaseStorage.getInstance()
-        val view = inflater.inflate(R.layout.fragment_camera, container, false)
+        val view = inflater.inflate(R.layout.fragment_camera_product, container, false)
 
         Log.i(LOG_TAG, "Sku: ${args.skuNumber}")
 
@@ -74,17 +70,17 @@ class CameraFragment : Fragment() {
             startCamera(false)
         } else {
             ActivityCompat.requestPermissions(
-                activity as MainActivity, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+                    activity as MainActivity, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
-        }
-        capturePhotoButton = view.findViewById(R.id.camera_capture_frag_button)
-        flipCameraButton = view.findViewById(R.id.flipCamera)
-        capturePhotoButton.setOnClickListener {
-            takePhoto()
         }
 
         activity?.extended_fab?.hide()
 
+        capturePhotoButton = view.findViewById(R.id.camera_capture_frag_product_button)
+        flipCameraButton = view.findViewById(R.id.flipCameraProduct)
+        capturePhotoButton.setOnClickListener {
+            takePhoto()
+        }
 
         flipCameraButton.setOnClickListener {
             cameraFacing = if (cameraFacing) {
@@ -115,17 +111,17 @@ class CameraFragment : Fragment() {
 
             // Preview
             preview = Preview.Builder()
-                .build()
+                    .build()
 
             imageCapture = ImageCapture.Builder()
-                .build()
+                    .build()
 
             val cameraSelector = if (changeCamera) {
                 CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_FRONT)
-                    .build()
+                        .build()
             }else {
                 CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                    .build()
+                        .build()
             }
 
             try {
@@ -134,9 +130,9 @@ class CameraFragment : Fragment() {
 
                 // Bind use cases to camera
                 camera = cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture
+                        this, cameraSelector, preview, imageCapture
                 )
-                preview?.setSurfaceProvider(viewFinder.surfaceProvider)
+                preview?.setSurfaceProvider(viewFinderProduct.surfaceProvider)
             } catch (exc: Exception) {
                 Log.e(LOG_TAG, "Use case binding failed", exc)
             }
@@ -154,7 +150,7 @@ class CameraFragment : Fragment() {
 
         // Create timestamped output file to hold the image
         val photoFile = File(
-            outputDirectory,
+                outputDirectory,
                 "_$transaction_number" + "SKU_$sku_number" + ".jpg"
         )
 
@@ -164,48 +160,44 @@ class CameraFragment : Fragment() {
         // Setup image capture listener which is triggered after photo has
         // been taken
         imageCapture.takePicture(
-            outputOptions,
-            ContextCompat.getMainExecutor(context),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onError(exc: ImageCaptureException) {
-                    Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
-                }
-
-                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-
-                    val savedUri = Uri.fromFile(photoFile)
-
-                    if (user != null) {
-
-                        val storageRef = storage.reference
-
-
-                        val imagesRef: StorageReference? =
-                            storageRef.child("transaction/${savedUri.lastPathSegment}")
-
-
-                        val uploadTask = imagesRef?.putFile(savedUri)
-                        uploadTask?.addOnFailureListener {
-                            // Handle unsuccessful uploads
-                            Log.e(LOG_TAG, "Imaged failed to saved in FB", it)
-
-                        }?.addOnSuccessListener { taskSnapshot ->
-                            Log.i(LOG_TAG, "Imaged saved in FB")
-                            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-                            // ...
-                        }
-                    } else {
-                        Log.i(LOG_TAG, "user is null")
+                outputOptions,
+                ContextCompat.getMainExecutor(context),
+                object : ImageCapture.OnImageSavedCallback {
+                    override fun onError(exc: ImageCaptureException) {
+                        Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                     }
 
-                    val msg = "Photo capture succeeded: $savedUri"
+                    override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+
+                        val savedUri = Uri.fromFile(photoFile)
+
+                        if (user != null) {
+
+                            val storageRef = storage.reference
+
+
+                            val imagesRef: StorageReference? =
+                                    storageRef.child("transaction/products/${savedUri.lastPathSegment}")
+
+
+                            val uploadTask = imagesRef?.putFile(savedUri)
+                            uploadTask?.addOnFailureListener {
+                                // Handle unsuccessful uploads
+                                Log.e(LOG_TAG, "Imaged failed to saved in FB", it)
+
+                            }?.addOnSuccessListener { taskSnapshot ->
+                                Log.i(LOG_TAG, "Imaged saved in FB")
+                                // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+                                // ...
+                            }
+                        } else {
+                            Log.i(LOG_TAG, "user is null")
+                        }
+
+                        val msg = "Photo capture succeeded: $savedUri"
 //                    Toast.makeText(context, "Thank you", Toast.LENGTH_SHORT).show()
 //                    Toast.makeText(context, "Sign up completed", Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, msg)
-                    val action = CameraFragmentDirections
-                        .actionCameraFragmentToCameraProductFragment(transaction_number!!, sku_number!!)
-
-                    findNavController().navigate(action)
+                        Log.d(TAG, msg)
 //                    val bundle = Bundle()
 //                    bundle.putParcelable(APPOINTMENT, appointment)
 //                    bundle.putParcelable(CUSTOMER, customer)
@@ -213,15 +205,15 @@ class CameraFragment : Fragment() {
 //                    bundle.putString(TRANSACTION_NUMBER, transaction_number)
 //                    bundle.putString(SKU_NUMBER, sku_number)
 //
-//                    findNavController().navigate(R.id.cameraProductFragment, bundle)
-                }
-            })
+                    findNavController().navigate(R.id.transactionFragment)
+                    }
+                })
     }
 
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            requireContext(), it
+                requireContext(), it
         ) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -234,17 +226,17 @@ class CameraFragment : Fragment() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
+            requestCode: Int, permissions: Array<String>, grantResults:
+            IntArray
     ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera(false)
             } else {
                 Toast.makeText(
-                    context,
-                    "Permissions not granted by the user.",
-                    Toast.LENGTH_SHORT
+                        context,
+                        "Permissions not granted by the user.",
+                        Toast.LENGTH_SHORT
                 ).show()
                 requireActivity().finish()
             }

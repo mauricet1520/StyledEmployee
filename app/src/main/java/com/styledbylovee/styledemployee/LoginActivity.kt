@@ -22,8 +22,6 @@ class LoginActivity : AppCompatActivity() {
         val providers = arrayListOf(
                 AuthUI.IdpConfig.EmailBuilder().build())
 
-
-
         val user = FirebaseAuth.getInstance().currentUser
 
         if (user != null) {
@@ -57,8 +55,8 @@ class LoginActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 val user = FirebaseAuth.getInstance().currentUser
                 val uid = user!!.uid
-//                val intent = Intent(this, MainActivity::class.java)
-//                startActivity(intent)
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
 
             } else {
                 Toast.makeText(this, "Sign In Failed", Toast.LENGTH_SHORT).show()

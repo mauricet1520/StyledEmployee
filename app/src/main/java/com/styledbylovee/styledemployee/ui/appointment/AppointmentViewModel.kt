@@ -14,6 +14,7 @@ class AppointmentViewModel(app: Application): AndroidViewModel(app) {
         )
     val setmoreAppointmentData = appointmentRepository.setmoreAppointmentData
     val appointmentData = appointmentRepository.appointmentData
+    val staffData = appointmentRepository.staffData
 
     fun getSetmoreAppointment(staff_key: String) {
         appointmentRepository.fetchAppointments(staff_key)
@@ -21,6 +22,10 @@ class AppointmentViewModel(app: Application): AndroidViewModel(app) {
 
     fun getAppointment(appointmentId: String) {
         appointmentRepository.getAppointments(appointmentId)
+    }
+
+    fun getAllStaff() {
+        appointmentRepository.getAllStaff()
     }
 
     private val _text = MutableLiveData<String>().apply {

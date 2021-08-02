@@ -1,42 +1,35 @@
 {
   "project_info": {
-    "project_number": "764004375919",
-    "firebase_url": "https://styled-by-love-e-qa.firebaseio.com",
-    "project_id": "styled-by-love-e-qa",
-    "storage_bucket": "styled-by-love-e-qa.appspot.com"
+    "project_number": "302311384125",
+    "firebase_url": "https://styled-by-love-e.firebaseio.com",
+    "project_id": "styled-by-love-e",
+    "storage_bucket": "styled-by-love-e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:764004375919:android:6465194899de9a2ce25c9a",
+        "mobilesdk_app_id": "1:302311384125:android:0e92245981c2f8af177654",
         "android_client_info": {
           "package_name": "com.coolreecedev.styledpractice"
         }
       },
       "oauth_client": [
         {
-          "client_id": "764004375919-69v0sa7v9eothtl991efk0r1ms4nm5ec.apps.googleusercontent.com",
+          "client_id": "302311384125-21ccpfjffajhoq1eeehqloqiqdro60ml.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDFXezCLR6YPPUshsir-j7WAL0-pO5iuiE"
+          "current_key": "AIzaSyBTHKhfEk5WHuBx07gDz8yr0ZMmzgQz4G0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "764004375919-69v0sa7v9eothtl991efk0r1ms4nm5ec.apps.googleusercontent.com",
+              "client_id": "302311384125-21ccpfjffajhoq1eeehqloqiqdro60ml.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "764004375919-81e5o8541gjbcvu2rhoe2k17l0kkdmkr.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.LoveEDebug.Styled"
-              }
             }
           ]
         }
@@ -44,71 +37,28 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:764004375919:android:b7baeabba450b72de25c9a",
-        "android_client_info": {
-          "package_name": "com.styledbylovee.cameraxpractice"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "764004375919-69v0sa7v9eothtl991efk0r1ms4nm5ec.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDFXezCLR6YPPUshsir-j7WAL0-pO5iuiE"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "764004375919-69v0sa7v9eothtl991efk0r1ms4nm5ec.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "764004375919-81e5o8541gjbcvu2rhoe2k17l0kkdmkr.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.LoveEDebug.Styled"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:764004375919:android:d515ebbfac3e6633e25c9a",
+        "mobilesdk_app_id": "1:302311384125:android:9257234ca87487a4177654",
         "android_client_info": {
           "package_name": "com.styledbylovee.styledemployee"
         }
       },
       "oauth_client": [
         {
-          "client_id": "764004375919-69v0sa7v9eothtl991efk0r1ms4nm5ec.apps.googleusercontent.com",
+          "client_id": "302311384125-21ccpfjffajhoq1eeehqloqiqdro60ml.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDFXezCLR6YPPUshsir-j7WAL0-pO5iuiE"
+          "current_key": "AIzaSyBTHKhfEk5WHuBx07gDz8yr0ZMmzgQz4G0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "764004375919-69v0sa7v9eothtl991efk0r1ms4nm5ec.apps.googleusercontent.com",
+              "client_id": "302311384125-21ccpfjffajhoq1eeehqloqiqdro60ml.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "764004375919-81e5o8541gjbcvu2rhoe2k17l0kkdmkr.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.LoveEDebug.Styled"
-              }
             }
           ]
         }

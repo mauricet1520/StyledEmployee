@@ -1,4 +1,5 @@
 package com.styledbylovee.styledemployee.data.appointment
+import com.styledbylovee.styledemployee.data.staff.Staff
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
@@ -20,6 +21,7 @@ class AppointmentRepository(val app: Application) {
 
     val setmoreAppointmentData = MutableLiveData<List<SetmoreAppointment>>()
     val appointmentData = MutableLiveData<AppointmentDTO>()
+    val staffData = MutableLiveData<List<Staff>>()
 
     fun fetchAppointments(staff_key: String) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -27,9 +29,40 @@ class AppointmentRepository(val app: Application) {
         }
     }
 
+    fun getAllStaff() {
+        CoroutineScope(Dispatchers.IO).launch {
+
+        }
+    }
+
     fun getAppointments(appointmentId: String) {
         CoroutineScope(Dispatchers.IO).launch {
             getAppointmentWebService(appointmentId)
+        }
+    }
+
+    @WorkerThread
+    suspend fun getAllStaffWebService() {
+        if (networkAvailable()) {
+
+            val gson = GsonBuilder()
+                    .setLenient()
+                    .create()
+
+            val retrofit = buildRetrofit(gson)
+
+            val service = retrofit.create(AppointmentService::class.java)
+
+            val allStaffResponse = service.getAllStaff()
+
+
+            if(allStaffResponse.isSuccessful) {
+                Log.i(LOG_TAG, "Response: ${allStaffResponse.isSuccessful} Code: ${allStaffResponse.code()}")
+                val staffs = allStaffResponse.body()?.data?.staffs ?: emptyList()
+                staffData.postValue(staffs)
+            }else {
+                Log.i(LOG_TAG, "Response: ${allStaffResponse.isSuccessful} Code: ${allStaffResponse.code()}")
+            }
         }
     }
 
