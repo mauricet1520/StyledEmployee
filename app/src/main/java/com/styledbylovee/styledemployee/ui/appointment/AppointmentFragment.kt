@@ -1,32 +1,24 @@
 package com.styledbylovee.styledemployee.ui.appointment
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
-import com.styledbylovee.styledemployee.CheckoutDialogFragment
 import com.styledbylovee.styledemployee.R
 import com.styledbylovee.styledemployee.data.appointment.AppointmentRecyclerViewAdapter
 import com.styledbylovee.styledemployee.data.appointment.SetmoreAppointment
 import com.styledbylovee.styledemployee.data.product.ProductViewModel
 import com.styledbylovee.styledemployee.util.LOG_TAG
-import com.styledbylovee.styledemployee.util.MyLifeCycleObserver
-import java.util.*
 
 class AppointmentFragment : Fragment(), AppointmentRecyclerViewAdapter.AppointmentItemListener,
 AppointmentRecyclerViewAdapter.CheckoutItemListener{
@@ -51,10 +43,9 @@ AppointmentRecyclerViewAdapter.CheckoutItemListener{
 
         productViewModel =
                 ViewModelProvider(requireActivity()).get(ProductViewModel::class.java)
-
+        val user = FirebaseAuth.getInstance().currentUser
 
         appointmentViewModel.getAllStaff()
-
 
         navView = activity?.findViewById(R.id.nav_view)
         addButton = activity?.findViewById(R.id.extended_fab)
@@ -68,7 +59,6 @@ AppointmentRecyclerViewAdapter.CheckoutItemListener{
 
         recyclerView = root.findViewById(R.id.toolRecyclerViewId)
 
-        val user = FirebaseAuth.getInstance().currentUser
 
 
 
@@ -77,7 +67,7 @@ AppointmentRecyclerViewAdapter.CheckoutItemListener{
         appointmentViewModel.staffData.observe(viewLifecycleOwner, Observer {staffList ->
             staffList.forEach {
                 if(user != null) {
-                    if (it.emailId == user.email) {
+                    if (it.email_id == user.email) {
                         it.key?.let { key -> appointmentViewModel.getSetmoreAppointment(key) }
                     }
                 }

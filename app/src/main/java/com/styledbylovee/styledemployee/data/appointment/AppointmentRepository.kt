@@ -31,13 +31,19 @@ class AppointmentRepository(val app: Application) {
 
     fun getAllStaff() {
         CoroutineScope(Dispatchers.IO).launch {
-
+            getAllStaffWebService()
         }
     }
 
     fun getAppointments(appointmentId: String) {
         CoroutineScope(Dispatchers.IO).launch {
             getAppointmentWebService(appointmentId)
+        }
+    }
+
+    fun updateAppointment(appointmentDTO: AppointmentDTO) {
+        CoroutineScope(Dispatchers.IO).launch {
+            updateAppointmentWebCall(appointmentDTO)
         }
     }
 
@@ -114,6 +120,22 @@ class AppointmentRepository(val app: Application) {
             }else {
                 Log.i(LOG_TAG, "Response getAppointment: ${response.isSuccessful} Code: ${response.code()}")
             }
+
+        }
+    }
+
+    @WorkerThread
+    suspend fun updateAppointmentWebCall(appointmentDTO: AppointmentDTO) {
+        if (networkAvailable()) {
+
+            val gson = GsonBuilder()
+                .setLenient()
+                .create()
+
+            val retrofit = buildRetrofit(gson)
+
+            val service = retrofit.create(AppointmentService::class.java)
+            service.updateAppointment(appointmentDTO)
 
         }
     }

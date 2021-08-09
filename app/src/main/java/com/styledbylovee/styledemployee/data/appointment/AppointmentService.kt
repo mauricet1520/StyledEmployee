@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface AppointmentService {
 
     @POST("/updateAppointmentInFB")
-    suspend fun updateAppointment(@Body appointment: Appointment)
+    suspend fun updateAppointment(@Body appointment: AppointmentDTO)
 
     @GET("/getAppointment")
     suspend fun getAppointment(@Query("appointmentId") appointmentId: String):
@@ -24,4 +24,5 @@ interface AppointmentService {
 
     @GET("/getAllStaff")
     suspend fun getAllStaff(): Response<FetchAllStaffResponse>
+
 }

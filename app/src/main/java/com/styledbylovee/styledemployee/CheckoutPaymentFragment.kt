@@ -21,6 +21,7 @@ import com.stripe.android.Stripe
 import com.stripe.android.model.ConfirmPaymentIntentParams
 import com.stripe.android.model.StripeIntent
 import com.styledbylovee.styledemployee.data.appointment.Appointment
+import com.styledbylovee.styledemployee.data.appointment.AppointmentDTO
 import com.styledbylovee.styledemployee.data.checkout.StripeRequest
 import com.styledbylovee.styledemployee.data.customer.Customer
 import com.styledbylovee.styledemployee.data.customer.CustomerViewModel
@@ -50,6 +51,7 @@ class CheckoutPaymentFragment : Fragment() {
     private lateinit var customerViewModel: CustomerViewModel
     private lateinit var appointmentViewModel: AppointmentViewModel
     private var appointment: Appointment? = null
+    private lateinit var appointmentDTO: AppointmentDTO
     private var customer: Customer? = null
     private var transaction_number: String? = null
     private lateinit var stripe: Stripe
@@ -108,6 +110,7 @@ class CheckoutPaymentFragment : Fragment() {
 
         appointmentViewModel.appointmentData.observe(viewLifecycleOwner, Observer {
             Log.i(LOG_TAG, "Customer id from appointmentData ${it.customer_id}")
+            appointmentDTO = it
             customerViewModel.getCustomerAppointment(it.customer_id!!)
         })
 
@@ -118,7 +121,7 @@ class CheckoutPaymentFragment : Fragment() {
 
 
         binding.processPaymentButton.setOnClickListener {
-            if (customerEmail.isNotEmpty()) {
+            if (customerEmail.isNotEmpty() && appointmentDTO.status != "COMPLETED") {
                 Log.i(LOG_TAG, "Processing Payment")
 
                 Log.i(LOG_TAG, "Processing Payment")
@@ -136,7 +139,12 @@ class CheckoutPaymentFragment : Fragment() {
                     Toast.makeText(requireContext(), "Total Cost is set to $0", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Log.i(LOG_TAG, "No email")
+                Log.i(LOG_TAG, "No email or payment completed")
+                Toast.makeText(requireContext(),
+                    "Appointment is showing completed",
+                    Toast.LENGTH_SHORT)
+                    .show()
+
             }
         }
 
@@ -166,11 +174,13 @@ class CheckoutPaymentFragment : Fragment() {
                 val paymentIntent = result.intent
                 val status = paymentIntent.status
                 if (status == StripeIntent.Status.Succeeded) {
+                    appointmentDTO.status = "COMPLETED"
+                    appointmentViewModel.updateAppointment(appointmentDTO)
+
                     Log.i(LOG_TAG, "Payment was Successful")
                     Toast.makeText(requireContext(), "Payment was Successful", Toast.LENGTH_SHORT)
                         .show()
                     findNavController().navigate(R.id.navigation_appointment)
-
 
                 } else if (status == StripeIntent.Status.RequiresPaymentMethod) {
                     Toast.makeText(requireContext(), "Payment Failed", Toast.LENGTH_LONG).show()

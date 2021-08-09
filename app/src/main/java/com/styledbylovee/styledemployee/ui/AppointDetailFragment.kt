@@ -163,11 +163,6 @@ class AppointDetailFragment : Fragment() {
                         .skipMemoryCache(true)
                         .into(this)
             }
-
-
-
-
-
         })
 
 

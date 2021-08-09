@@ -41,6 +41,7 @@ class TransactionFragment : Fragment(), TransactionRecyclerViewAdapter.CheckoutI
 TransactionRecyclerViewAdapter.TransactionItemListener{
 
     private lateinit var binding: FragmentTransactionBinding
+    private lateinit var appointmentViewModel: AppointmentViewModel
     private lateinit var productViewModel: ProductViewModel
     private  var navView: BottomNavigationView? = null
     private var addButton: ExtendedFloatingActionButton? = null
@@ -83,6 +84,9 @@ TransactionRecyclerViewAdapter.TransactionItemListener{
 
         Log.i(LOG_TAG, "Bottom Nav Shown: ${navView?.isShown}")
 
+        appointmentViewModel =
+            ViewModelProvider(requireActivity()).get(AppointmentViewModel::class.java)
+
         productViewModel =
             ViewModelProvider(requireActivity()).get(ProductViewModel::class.java)
 
@@ -96,6 +100,15 @@ TransactionRecyclerViewAdapter.TransactionItemListener{
             }
         }
         )
+
+        appointmentViewModel.appointmentData.observe(viewLifecycleOwner, Observer {
+            if (it.status == "COMPLETED") {
+                Toast.makeText(requireContext(), "Appointment already completed",
+                    Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.navigation_appointment)
+
+            }
+        })
 
         recyclerView = view.findViewById(R.id.transaction_recycler_view)
 

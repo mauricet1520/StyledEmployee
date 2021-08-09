@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.styledbylovee.styledemployee.data.appointment.AppointmentDTO
 import com.styledbylovee.styledemployee.data.appointment.AppointmentRepository
 
 class AppointmentViewModel(app: Application): AndroidViewModel(app) {
@@ -26,6 +27,10 @@ class AppointmentViewModel(app: Application): AndroidViewModel(app) {
 
     fun getAllStaff() {
         appointmentRepository.getAllStaff()
+    }
+
+    fun updateAppointment(appointmentDTO: AppointmentDTO) {
+        appointmentRepository.updateAppointment(appointmentDTO)
     }
 
     private val _text = MutableLiveData<String>().apply {
