@@ -22,7 +22,6 @@ class ProductRepository(val app: Application) {
     val transactionData = MutableLiveData<Transaction>()
     val transactionNumber =  MutableLiveData<UUID>()
 
-
     fun getProductsInTransaction(transaction_number: String) {
         CoroutineScope(Dispatchers.IO).launch {
             callWebServiceGetProductsInTransaction(transaction_number)
@@ -81,8 +80,31 @@ class ProductRepository(val app: Application) {
 
             val serviceData = service.getProductsInTransaction(transaction_number).body()
 
-            transactionData.postValue(serviceData)
+            transactionData.postValue(serviceData!!)
 
+        }
+    }
+
+    @WorkerThread
+    suspend fun callWebServiceDeleteProductsInTransaction(transaction_number: String, skuNumber: String?) {
+        if (networkAvailable()) {
+            Log.i(LOG_TAG, "Calling WebService: $STRIPE_STYLED_BASE_URL")
+            val gson = GsonBuilder()
+                .setLenient()
+                .create()
+
+            val retrofit = Retrofit.Builder()
+                .baseUrl(STRIPE_STYLED_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build()
+
+            val service = retrofit.create(ProductService::class.java)
+
+            val serviceData = service.deleteProduct(transaction_number, skuNumber)
+
+            if (serviceData.isSuccessful) {
+                Log.i(LOG_TAG, "Successful call for deleting a product")
+            }
         }
 
 
@@ -102,5 +124,11 @@ class ProductRepository(val app: Application) {
             app.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         return networkInfo?.isConnectedOrConnecting ?: false
+    }
+
+    fun deleteProduct(transactionNumber: String?, skuNumber: String?) {
+        CoroutineScope(Dispatchers.IO).launch {
+            callWebServiceDeleteProductsInTransaction(transactionNumber.toString(), skuNumber)
+        }
     }
 }

@@ -38,7 +38,7 @@ import java.util.*
 
 
 class TransactionFragment : Fragment(), TransactionRecyclerViewAdapter.CheckoutItemListener,
-TransactionRecyclerViewAdapter.TransactionItemListener{
+TransactionRecyclerViewAdapter.TransactionItemListener, TransactionRecyclerViewAdapter.DeleteProductListener{
 
     private lateinit var binding: FragmentTransactionBinding
     private lateinit var appointmentViewModel: AppointmentViewModel
@@ -48,7 +48,6 @@ TransactionRecyclerViewAdapter.TransactionItemListener{
     lateinit var storage: FirebaseStorage
     lateinit var transactionNumber: String
     lateinit var skuNumber: String
-
 
     private  var totalCost: Double = 0.0
 
@@ -106,7 +105,6 @@ TransactionRecyclerViewAdapter.TransactionItemListener{
                 Toast.makeText(requireContext(), "Appointment already completed",
                     Toast.LENGTH_SHORT).show()
                 findNavController().navigate(R.id.navigation_appointment)
-
             }
         })
 
@@ -121,6 +119,7 @@ TransactionRecyclerViewAdapter.TransactionItemListener{
                     TransactionRecyclerViewAdapter(
                         requireContext(),
                         it.products!!,
+                        this,
                         this,
                         this
                     )
@@ -192,6 +191,10 @@ TransactionRecyclerViewAdapter.TransactionItemListener{
         activity?.extended_fab?.show()
         addButton?.visibility = View.VISIBLE
         super.onResume()
+    }
+
+    override fun deleteProduct(transactionNumber: String?, skuNumber: String?) {
+//        productViewModel.deleteProduct(transactionNumber, skuNumber)
     }
 
 //    override fun onPause() {

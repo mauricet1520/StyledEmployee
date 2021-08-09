@@ -21,4 +21,8 @@ class ProductViewModel(app: Application): AndroidViewModel(app)  {
     fun createTransactionNumber() {
         productRepository.beginTransaction()
     }
+
+    fun deleteProduct(transactionNumber: String?, skuNumber: String?) {
+        productRepository.deleteProduct(transactionNumber, skuNumber)
+    }
 }

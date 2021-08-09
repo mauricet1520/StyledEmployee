@@ -27,6 +27,7 @@ import java.util.*
 class TransactionRecyclerViewAdapter(val context: Context,
                                      private val values: List<Product>,
                                      val itemListener: TransactionItemListener,
+                                     val deleteProductListener: DeleteProductListener,
                                      val checkoutItemListener: CheckoutItemListener
 ) : RecyclerView.Adapter<TransactionRecyclerViewAdapter.ViewHolder>() {
     private lateinit var storage: FirebaseStorage
@@ -48,6 +49,10 @@ class TransactionRecyclerViewAdapter(val context: Context,
         holder.description.text = description
         holder.store.text = store
         holder.cost.text = cost
+
+//        holder.removeButton.setOnClickListener {
+//            deleteProductListener.deleteProduct(item.transaction_number, item.sku_number)
+//        }
 
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
@@ -97,10 +102,13 @@ class TransactionRecyclerViewAdapter(val context: Context,
         val store: TextView = itemView.findViewById<TextView>(R.id.storeTextId)
         val cost: TextView = itemView.findViewById<TextView>(R.id.costId)
         val image: ImageView = itemView.findViewById(R.id.product_image_id)
-        val editButton: MaterialButton = itemView.findViewById(R.id.editButton)
-        val removeButton: MaterialButton = itemView.findViewById(R.id.removeButton)
+//        val editButton: MaterialButton = itemView.findViewById(R.id.editButton)
+//        val removeButton: MaterialButton = itemView.findViewById(R.id.removeButton)
     }
 
+    interface DeleteProductListener {
+        fun deleteProduct(transactionNumber: String?, skuNumber: String?)
+    }
     interface TransactionItemListener {
         fun onItemClick(product: Product)
     }
